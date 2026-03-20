@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI
 from typing import List
 from datetime import datetime
@@ -61,6 +62,10 @@ def add_problem(equipment_id: int, description: str):
 def search_equipment(name: str):
     return [eq.to_json() for eq in equipment_list if name.lower() in eq.name.lower()]
 
-
+@app.post("/save")
+def save_equipment():
+    with open("equipment.json", "w", encoding="utf-8") as f:
+        json.dump([eq.dict() for eq in equipment_list], f, ensure_ascii=False, indent=4)
+    return {"message": "Дані збережено у equipment.json"}
 
 
