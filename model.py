@@ -8,6 +8,10 @@ class Equipment(BaseModel):
     status: str
     room: str
 
+    def to_json(self) -> str:
+        return self.json()
+
+
 class Movement(BaseModel):
     id: int
     equipment_id: int
@@ -15,6 +19,18 @@ class Movement(BaseModel):
     to_room: str
     date: datetime
 
+    def to_json(self) -> str:
+        return self.json()
+
+
+class Problem(BaseModel):
+    id: int
+    equipment_id: int
+    description: str
+    date: datetime
+
+    def to_json(self) -> str:
+        return self.json()
 
 
 
