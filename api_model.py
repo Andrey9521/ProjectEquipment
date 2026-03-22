@@ -12,12 +12,14 @@ problems: List[Problem] = []
 
 @app.get("/equipment")
 def get_equipment():
-    return [equipment.to_json() for equipment in equipment_list]
+    return [equipment.to_dict() for equipment in equipment_list]
 
 @app.post("/add_equipment")
 def add_equipment(equipment: Equipment):
+    equipment.id = len(equipment_list) + 1
+
     equipment_list.append(equipment)
-    return {"message": "Обладнання додано", "equipment": equipment.to_json()}
+    return {"message": "Обладнання додано", "equipment": equipment.to_dict()}
 
 @app.put("/equipment/{equipment_id}/status")
 def add_equipment_status(equipment_id: int, status: str):
@@ -40,12 +42,12 @@ def move_equipment(equipment_id: int, new_room: str):
             )
             movements.append(movement)
             equipment.room = new_room
-            return {"message": "Обладнання переміщено", "movement": movement.to_json()}
+            return {"message": "Обладнання переміщено", "movement": movement.to_dict()}
     return {"error": "Обладнання не знайдено"}
 
 @app.get("/equipment/{equipment_id}/problems")
 def get_problems(equipment_id: int):
-    return [p.to_json() for p in problems if p.equipment_id == equipment_id]
+    return [p.to_dict() for p in problems if p.equipment_id == equipment_id]
 
 @app.post("/equipment/{equipment_id}/problem")
 def add_problem(equipment_id: int, description: str):
@@ -56,16 +58,16 @@ def add_problem(equipment_id: int, description: str):
         date=datetime.now()
     )
     problems.append(problem)
-    return {"message": "Проблему додано", "problem": problem.to_json()}
+    return {"message": "Проблему додано", "problem": problem.to_dict()}
 
 @app.get("/equipment/search")
 def search_equipment(name: str):
-    return [eq.to_json() for eq in equipment_list if name.lower() in eq.name.lower()]
+    return [eq.to_dict() for eq in equipment_list if name.lower() in eq.name.lower()]
 
 @app.post("/save")
 def save_equipment():
     with open("equipment.json", "w", encoding="utf-8") as f:
-        json.dump([eq.to_json() for eq in equipment_list], f, ensure_ascii=False, indent=4)
+        json.dump([eq.to_dict() for eq in equipment_list], f, ensure_ascii=False, indent=4)
     return {"message": "Дані збережено у equipment.json"}
 
 

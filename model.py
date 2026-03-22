@@ -1,15 +1,16 @@
+from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
 
 class Equipment(BaseModel):
-    id: int
+    id: Optional[int] = None
     name: str
     type: str
     status: str
     room: str
 
-    def to_json(self) -> str:
-        return self.json()
+    def to_dict(self) -> dict:
+        return self.dict()
 
 
 class Movement(BaseModel):
@@ -19,8 +20,8 @@ class Movement(BaseModel):
     to_room: str
     date: datetime
 
-    def to_json(self) -> str:
-        return self.json()
+    def to_dict(self) -> dict:
+        return self.dict()
 
 
 class Problem(BaseModel):
@@ -29,8 +30,8 @@ class Problem(BaseModel):
     description: str
     date: datetime
 
-    def to_json(self) -> str:
-        return self.json()
+    def to_dict(self) -> dict:
+        return self.dict()
 
 
 
